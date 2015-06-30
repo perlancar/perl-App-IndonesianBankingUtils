@@ -1,5 +1,11 @@
 Revision history for App-IndonesianBankingUtils
 
+0.02    2015-06-30 (PERLANCAR)
+
+        - Show Finance::Bank::ID::{BCA,Mandiri}'s version in CLI script's
+          --version.
+
+
 0.01    2015-04-28 (PERLANCAR)
 
         - First release. Put CLIs from Finance::Bank::ID::{BCA,BPRKS,Mandiri}
