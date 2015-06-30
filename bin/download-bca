@@ -107,6 +107,7 @@ sub download_bca {
 require Perinci::CmdLine::Classic;
 Perinci::CmdLine::Classic->new(
     url => '/main/download_bca',
+    extra_urls_for_version => ['/Finance/Bank/ID/BCA/'],
     log_any_app => 0, # because we'll init ourselves inside download_bca()
 )->run;
 

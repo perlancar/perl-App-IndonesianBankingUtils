@@ -29,7 +29,10 @@ sub run {
     $ibank->parse_statement($args{statement}, return_datetime_obj=>0);
 }
 
-Perinci::CmdLine::Any->new(url => '/main/run')->run;
+Perinci::CmdLine::Any->new(
+    url => '/main/run',
+    extra_urls_for_version => ['/Finance/Bank/ID/Mandiri/'],
+)->run;
 
 # ABSTRACT:
 # PODNAME:

@@ -118,6 +118,7 @@ sub download_mandiri {
 require Perinci::CmdLine::Classic;
 Perinci::CmdLine::Classic->new(
     url => '/main/download_mandiri',
+    extra_urls_for_version => ['/Finance/Bank/ID/Mandiri/'],
     log_any_app => 0, # because we'll init ourselves inside download_mandiri()
 )->run;
 
