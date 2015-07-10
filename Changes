@@ -1,5 +1,12 @@
 Revision history for App-IndonesianBankingUtils
 
+0.03    2015-07-10 (PERLANCAR)
+
+	- Add scripts from other dists: list-id-bank-cards, list-id-banks,
+	  list-bca-branches, parse-bca-account, list-mandiri-branches,
+	  parse-mandiri-account.
+
+
 0.02    2015-06-30 (PERLANCAR)
 
         - Show Finance::Bank::ID::{BCA,Mandiri}'s version in CLI script's
