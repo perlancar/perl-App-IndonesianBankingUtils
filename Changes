@@ -1,5 +1,16 @@
 Revision history for App-IndonesianBankingUtils
 
+0.04    2015-08-17 (PERLANCAR) - happy belated 20th CPAN day & dirgahayu 70th kemerdekaan RI!
+
+        - Add scripts from other dists: list-id-bank-cards, list-id-banks,
+          list-bca-branches, parse-bca-account, list-mandiri-branches,
+          parse-mandiri-account.
+
+        - [Bugfix] [build] Fix dzil plugin ordering.
+
+        - Switch from Log::Any to Log::Any::IfLOG.
+
+
 0.03    2015-07-10 (PERLANCAR)
 
 	- Add scripts from other dists: list-id-bank-cards, list-id-banks,
