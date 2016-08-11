@@ -88,9 +88,9 @@ sub download_bca {
                                $stmt->{end_date});
         $filename =~ s/[: ]//g; # : is for windows
         $log->info("Writing statements to YAML file `$filename' ...");
-        require File::Slurp::Tiny;
+        require File::Slurper;
         require YAML::Syck;
-        File::Slurp::Tiny::write_file($filename, YAML::Syck::Dump($stmt));
+        File::Slurper::write_text($filename, YAML::Syck::Dump($stmt));
     };
 
     if ($@) {
