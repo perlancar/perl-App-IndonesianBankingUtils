@@ -26,7 +26,9 @@ $SPEC{run} = {
 sub run {
     my %args = @_;
 
-    my $ibank = Finance::Bank::ID::BCA->new;
+    my $ibank = Finance::Bank::ID::BCA->new(
+        skip_problematic => 1,
+    );
     $ibank->parse_statement($args{statement}, return_datetime_obj=>0);
 }
 
