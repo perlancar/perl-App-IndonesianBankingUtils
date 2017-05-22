@@ -9,6 +9,8 @@ use strict;
 use warnings;
 use Log::Any::IfLOG '$log';
 
+use Data::Dmp;
+
 our %SPEC;
 
 $SPEC{download_bca} = {
@@ -74,7 +76,7 @@ sub download_bca {
 
     eval {
         my @bal = $ibank->_check_balances;
-        $log->debug("Balances: ".$ibank->_dmp(\@bal));
+        $log->debug("Balances: ".dmp(\@bal));
 
         my $stmt = $ibank->get_statement(
             account    => $args{account},
