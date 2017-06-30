@@ -7,7 +7,9 @@
 use 5.010;
 use strict;
 use warnings;
-use Log::Any::IfLOG '$log';
+use Log::ger;
+
+use Log::ger::Output ();
 
 our %SPEC;
 
@@ -44,35 +46,39 @@ sub download_mandiri {
     my $log_dir  = $args{log_dir}  // File::HomeDir->my_home . "/mandiri/logs";
     my $save_dir = $args{save_dir} // File::HomeDir->my_home . "/mandiri/logs/save";
 
-    local $ENV{SCREEN_LOG_LEVEL} = 'debug'
-        if (-t STDOUT) && !$ENV{SCREEN_LOG_LEVEL};
-    require Log::Any::App;
-    Log::Any::App::init([
-        -category_level => {Dumps=>'off'},
-        -file           => {
-            path           => "$log_dir/main.log",
+    Log::ger::Output->set(
+        'Composite',
+        category_level => {Dumps => 'off'},
+        outputs        => {
+            Screen => {
+                level => (-t STDOUT ? "debug" : "warn"), # XXX configurable
+                layout => [Pattern => {format=>'[%r] %m'}],
+            },
+            File => {
+                conf => { path => "$log_dir/main.log" },
+                level => "debug", # XXX configurable
+                layout => [Pattern => {format=>'[%d] [PID %P] %m'}],
+            },
+            DirWriteRotate => {
+                conf  => { path => "$log_dir/dumps" },
+                level => 'off',
+                category_level => {Dumps => 'trace'},
+            },
         },
-        -dir            => {
-            path           => "$log_dir/dumps",
-            level          => 'off',
-            # currently we always dump, Log::Any::App > 0.23 will support
-            # specifying sub { ... } to refer to general level
-            category_level => {Dumps => 'trace'},
-        },
-    ]);
+    );
 
     require File::Path;
     File::Path::mkpath($data_dir) unless -d $data_dir;
     die "Can't create data_dir `$data_dir'" unless -d $data_dir;
 
-    $log->info("Start session");
+    log_info("Start session");
 
     require Finance::Bank::ID::Mandiri;
     my $ibank = Finance::Bank::ID::Mandiri->new(
         username     => $args{username},
         password     => $args{password},
-        logger       => $log,
-        logger_dump  => Log::Any->get_logger(category => "Dumps"),
+        logger       => Log::ger->get_logger,
+        logger_dump  => Log::ger->get_logger(category => "Dumps"),
         verify_https => 1,
         save_dir     => $save_dir,
         mode         => $args{mode},
@@ -80,7 +86,7 @@ sub download_mandiri {
 
     eval {
         my $bal = $ibank->check_balance;
-        $log->debug("Balance: $bal");
+        log_debug("Balance: $bal");
 
         my $stmt = $ibank->get_statement(
             account    => $args{account},
@@ -98,29 +104,28 @@ sub download_mandiri {
         $stmt->{_balance} = $bal;
 
         $filename =~ s/[: ]//g; # : is for windows
-        $log->info("Writing statements to YAML file `$filename' ...");
+        log_info("Writing statements to YAML file `$filename' ...");
         require File::Slurper;
         require YAML::Syck;
         File::Slurper::write_text($filename, YAML::Syck::Dump($stmt));
     };
 
     if ($@) {
-        $log->error("die: $@");
+        log_error("die: $@");
     }
 
     # no matter what, try to logout so we're not locked out for 10 minutes,
     # annoying
     eval { $ibank->logout };
 
-    $log->info("End session");
+    log_info("End session");
     [200];
 }
 
-require Perinci::CmdLine::Classic;
-Perinci::CmdLine::Classic->new(
+require Perinci::CmdLine::Lite;
+Perinci::CmdLine::Lite->new(
     url => '/main/download_mandiri',
     extra_urls_for_version => ['/Finance/Bank/ID/Mandiri/'],
-    log_any_app => 0, # because we'll init ourselves inside download_mandiri()
 )->run;
 
 # ABSTRACT:
