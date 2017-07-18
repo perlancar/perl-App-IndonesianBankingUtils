@@ -9,6 +9,7 @@ use strict;
 use warnings;
 use Log::ger;
 
+use Log::ger::LevelFromEnv;
 use Log::ger::Output ();
 
 our %SPEC;
@@ -51,12 +52,10 @@ sub download_mandiri {
         category_level => {Dumps => 'off'},
         outputs        => {
             Screen => {
-                level => (-t STDOUT ? "debug" : "warn"), # XXX configurable
                 layout => [Pattern => {format=>'[%r] %m'}],
             },
             File => {
                 conf => { path => "$log_dir/main.log" },
-                level => "debug", # XXX configurable
                 layout => [Pattern => {format=>'[%d] [PID %P] %m'}],
             },
             DirWriteRotate => {
