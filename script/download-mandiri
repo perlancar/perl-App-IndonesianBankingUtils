@@ -9,7 +9,7 @@ use strict;
 use warnings;
 use Log::ger;
 
-use Log::ger::LevelFromEnv;
+use Log::ger::Level::FromEnv;
 use Log::ger::Output ();
 
 our %SPEC;
