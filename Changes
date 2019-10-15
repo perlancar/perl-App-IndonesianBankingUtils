@@ -1,3 +1,9 @@
+0.143   2019-10-15  Released-By: PERLANCAR; Urgency: medium
+
+	- [bugfix] Add missing dependencies:
+	  Log::ger::Output::{Composite,DirWriteRotate}.
+
+
 0.142   2019-05-10  Released-By: PERLANCAR
 
         - [build] Rebuild with updated Finance::Bank::ID::BCA (0.500).
