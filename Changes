@@ -1,3 +1,8 @@
+0.144   2020-03-18  Released-By: PERLANCAR; Urgency: medium
+
+        - [build] Rebuild with updated Log::ger* modules.
+
+
 0.143   2019-10-15  Released-By: PERLANCAR; Urgency: medium
 
 	- [bugfix] Add missing dependencies:
